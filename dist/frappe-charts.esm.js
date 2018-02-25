@@ -126,8 +126,6 @@ function getBarHeightAndYAttr(yTop, zeroLine, totalHeight) {
 	return [height, y];
 }
 
-// Constants used
-
 function $$1(expr, con) {
 	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
 }
@@ -2606,6 +2604,7 @@ class Heatmap extends BaseChart {
 		subdomain = '',
 		data = {},
 		discrete_domains = 0,
+		distribution = [],
 		count_label = '',
 		legend_colors = []
 	}) {
@@ -2615,6 +2614,7 @@ class Heatmap extends BaseChart {
 
 		this.domain = domain;
 		this.subdomain = subdomain;
+		this.distribution = distribution;
 		this.data = data;
 		this.discrete_domains = discrete_domains;
 		this.count_label = count_label;
@@ -2690,7 +2690,10 @@ class Heatmap extends BaseChart {
 		this.data_groups.textContent = '';
 
 		let data_values = Object.keys(this.data).map(key => this.data[key]);
-		this.distribution = calcDistribution(data_values, this.distribution_size);
+
+		if (!this.distribution.length){
+			this.distribution = calcDistribution(data_values, this.distribution_size);	
+		}
 
 		this.month_names = ["January", "February", "March", "April", "May", "June",
 			"July", "August", "September", "October", "November", "December"
@@ -2856,14 +2859,6 @@ class Heatmap extends BaseChart {
 		this.bind_tooltip();
 	}
 }
-
-// if ("development" !== 'production') {
-// 	// Enable LiveReload
-// 	document.write(
-// 		'<script src="http://' + (location.host || 'localhost').split(':')[0] +
-// 		':35729/livereload.js?snipver=1"></' + 'script>'
-// 	);
-// }
 
 const chartTypes = {
 	line: LineChart,
