@@ -11,6 +11,7 @@ export default class Heatmap extends BaseChart {
 		subdomain = '',
 		data = {},
 		discrete_domains = 0,
+		distribution = [],
 		count_label = '',
 		legend_colors = []
 	}) {
@@ -20,6 +21,7 @@ export default class Heatmap extends BaseChart {
 
 		this.domain = domain;
 		this.subdomain = subdomain;
+		this.distribution = distribution;
 		this.data = data;
 		this.discrete_domains = discrete_domains;
 		this.count_label = count_label;
@@ -95,7 +97,10 @@ export default class Heatmap extends BaseChart {
 		this.data_groups.textContent = '';
 
 		let data_values = Object.keys(this.data).map(key => this.data[key]);
-		this.distribution = calcDistribution(data_values, this.distribution_size);
+
+		if (!this.distribution.length){
+			this.distribution = calcDistribution(data_values, this.distribution_size);	
+		}
 
 		this.month_names = ["January", "February", "March", "April", "May", "June",
 			"July", "August", "September", "October", "November", "December"
